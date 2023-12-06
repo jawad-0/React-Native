@@ -19,7 +19,7 @@ import {AppRegistry} from 'react-native';
 //import App from './SK-PROJECTS/Flatlist_Basic';
 //import App from './SK-PROJECTS/Flatlist_CheckBox';
 //import App from './SK-PROJECTS/Login_Task';
-//import App from './SK-PROJECTS/ASG_01';
+import App from './SK-PROJECTS/MCQ_Quiz_App';
 //import App from './SK-PROJECTS/Flex';
 //import App from './SK-PROJECTS/Buttons';
 //import App from './SK-PROJECTS/SelectionList';
@@ -28,7 +28,7 @@ import {AppRegistry} from 'react-native';
 //import App from './SK-PROJECTS/29_Nov';
 //import App from './SK-PROJECTS/Lab_Task';
 //import App from './SK-PROJECTS/SQL_CRUD';
-import App from './SK-PROJECTS/Task_1';
+//import App from './SK-PROJECTS/Task_1';
 
 import {name as appName} from './app.json';
 
