@@ -26,9 +26,9 @@ import {AppRegistry} from 'react-native';
 //import App from './SK-PROJECTS/Lab_06';
 //import App from './SK-PROJECTS/Quiz';
 //import App from './SK-PROJECTS/29_Nov';
-//import App from '.SK-PROJECTS/Lab_Task';
-//import App from '.SK-PROJECTS/SQL_CRUD';
-import App from '.SK-PROJECTS/Task_1';
+//import App from './SK-PROJECTS/Lab_Task';
+//import App from './SK-PROJECTS/SQL_CRUD';
+import App from './SK-PROJECTS/Task_1';
 
 import {name as appName} from './app.json';
 
