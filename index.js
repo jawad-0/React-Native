@@ -14,6 +14,7 @@ import {AppRegistry} from 'react-native';
 
 //<-------------------------------------------------->
 
+//import App from './SK-PROJECTS/App';
 //import App from './SK-PROJECTS/Calculator_01';
 //import App from './SK-PROJECTS/Calculator_02';
 //import App from './SK-PROJECTS/Flatlist_Basic';
