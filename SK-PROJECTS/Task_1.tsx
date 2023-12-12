@@ -17,7 +17,7 @@ const App = () => {
   const [department, setDepartment] = useState('');
   const [designation, setDesignation] = useState('');
   const [selectedDesignation, setSelectedDesignation] = useState('');
-  const designationData = ['Item 1', 'Item 2', 'Item 3'];
+  const designationData = ['Manager', 'CIO', 'HR'];
   const [data, setData] = useState('');
   const [month, setMonth] = useState('');
   const [year, setYear] = useState('');
@@ -234,7 +234,12 @@ const App = () => {
 
       <View>
         <Text style={styles.text}>Designation</Text>
-      </View>
+        <RNPickerSelect
+            placeholder={{ label: 'Select Designation', value: null }}
+            onValueChange={(value) => setDesignation(value)}
+            items={designationData.map((item) => ({ label: item, value: item }))}
+        />
+    </View>
 
       <View style={{ flexDirection: 'row' }}>
         <Text style={styles.text}>Salary</Text>
@@ -300,6 +305,17 @@ const App = () => {
 };
 
 const styles = StyleSheet.create({
+    picker: {
+        fontSize: 16,
+        paddingVertical: 12,
+        paddingHorizontal: 10,
+        borderWidth: 1,
+        borderColor: 'gray',
+        borderRadius: 4,
+        color: 'black',
+        paddingRight: 30,
+        marginTop: 10,
+      },
   container: {
     flex: 1,
     justifyContent: 'center',
