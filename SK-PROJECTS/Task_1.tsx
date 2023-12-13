@@ -159,6 +159,7 @@ const handleCheckboxToggle1 = () => {
       <Text style={styles.startdate}>Start Date : </Text>
       <View style={styles.dropdownContainer}>
         <Picker
+          style={styles.datepicker}
           selectedValue={day}
           onValueChange={(itemValue) => setDay(itemValue)}
         >
@@ -168,6 +169,7 @@ const handleCheckboxToggle1 = () => {
           ))}
         </Picker>
         <Picker
+          style={styles.datepicker}
           selectedValue={month}
           onValueChange={(itemValue) => setMonth(itemValue)}
         >
@@ -177,6 +179,7 @@ const handleCheckboxToggle1 = () => {
           ))}
         </Picker>
         <Picker
+          style={styles.datepicker}
           selectedValue={year}
           onValueChange={(itemValue) => setYear(itemValue)}
         >
@@ -189,6 +192,7 @@ const handleCheckboxToggle1 = () => {
       <Text style={styles.startdate}>End Date : </Text>
       <View style={styles.dropdownContainer}>
         <Picker
+          style={styles.datepicker}
           selectedValue={endday}
           onValueChange={(itemValue) => setendDay(itemValue)}
         >
@@ -198,6 +202,7 @@ const handleCheckboxToggle1 = () => {
           ))}
         </Picker>
         <Picker
+          style={styles.datepicker}
           selectedValue={endmonth}
           onValueChange={(itemValue) => setendMonth(itemValue)}
         >
@@ -207,6 +212,7 @@ const handleCheckboxToggle1 = () => {
           ))}
         </Picker>
         <Picker
+          style={styles.datepicker}
           selectedValue={endyear}
           onValueChange={(itemValue) => setendYear(itemValue)}
         >
@@ -271,7 +277,7 @@ const handleCheckboxToggle1 = () => {
       </View>
 
       <TouchableOpacity onPress={handleSaveButton} style={styles.savebutton}>
-        <Text style={styles.buttonText}>Save</Text>
+        <Text style={styles.buttonText}>Save Data</Text>
       </TouchableOpacity>
 
       <Text></Text>
@@ -311,12 +317,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: 'grey',
+        backgroundColor: '#02a2ab',
+        // backgroundColor: 'darkcyan',
     },
     cb_container: {
         flexDirection: 'row',
+        alignSelf: 'center',
         justifyContent: 'center',
-         backgroundColor: 'grey',
     },
     dateContainer: {
         marginTop: 20,
@@ -339,9 +346,9 @@ const styles = StyleSheet.create({
     inputsalary: {
         textAlign: 'center',
         height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        width: 200,
+        borderColor: 'black',
+        borderWidth: 2,
+        width: 220,
         borderRadius: 15,
         marginLeft: 20,
         marginTop: 10,
@@ -366,11 +373,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#11ba1c',
         padding: 8,
         width: 150,
-        borderRadius: 25,
+        borderRadius: 20,
         marginTop: 30,
         marginVertical: 5,
         alignSelf: 'center',
-        borderWidth: 1,
+        borderWidth: 2,
         borderColor: 'white',
     },
     buttonText: {
@@ -399,14 +406,25 @@ const styles = StyleSheet.create({
         fontFamily: 'georgia',
         fontSize: 18,
     },
-    dropdownContainer: {
-        marginLeft: 10,
-        marginRight: 10,
-        width: 150,
-        marginLeft: 100,
+    dropdownContainer2: {
+        width: 130,
     },
+    datepicker: {
+        flex: 1,
+        height: 40,
+      },
+    dropdownContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 5,
+        marginRight: 5,
+        borderWidth: 3,
+        borderColor: 'black',
+        borderRadius: 15,
+      },
     des_dropdownContainer: {
-        marginLeft: 10,
         marginRight: 10,
         width: 250,
         marginLeft: 100,
@@ -429,14 +447,15 @@ const styles = StyleSheet.create({
         width: 100,
         marginVertical: 5,
         marginLeft: 15,
-        borderWidth: 1,
+        borderWidth: 2,
         borderColor: 'black',
         borderRadius: 25,
         paddingHorizontal: 10,
         paddingVertical: 5,
     },
     selectedRadioButton: {
-        backgroundColor: '#11ba1c',
+        backgroundColor: 'blue',
+        // backgroundColor: '#11ba1c',
         borderColor: 'white',
     },
     checkboxContainer: {
