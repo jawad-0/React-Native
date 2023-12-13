@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, FlatList, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, FlatList, StyleSheet, Alert, TouchableOpacity, ScrollView } from 'react-native';
 import SQLite from 'react-native-sqlite-storage';
 import RNPickerSelect from 'react-native-picker-select';
-import Picker from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
 import { RadioButton } from 'react-native-paper';
 import { CheckBox } from 'react-native-elements';
 
@@ -13,35 +13,23 @@ const db = SQLite.openDatabase(
 );
 
 const App = () => {
-  const [name, setName] = useState('');
-  const [department, setDepartment] = useState('');
   const [designation, setDesignation] = useState('');
-  const [selectedDesignation, setSelectedDesignation] = useState('');
-  const designationData = ['Manager', 'CIO', 'HR'];
+  const designationData = ['HR Manager','Employee','CEO','CIO','HOD'];
   const [data, setData] = useState('');
+
+  const [day, setDay] = useState('');
   const [month, setMonth] = useState('');
   const [year, setYear] = useState('');
-  const [day, setDay] = useState('');
-  const [startmonth, setstartMonth] = useState('');
-  const [startyear, setstartYear] = useState('');
-  const [startday, setstartDay] = useState('');
-  const [salary, setSalary] = useState('');
-  const [gender, setGender] = useState('male');
-  const [checked1, setChecked1] = useState(false);
-  const [checked2, setChecked2] = useState(false);
-  const [checked3, setChecked3] = useState(false);
+  const days = Array.from({ length: 31 }, (_, i) => `${i + 1}`);
+  const months = Array.from({ length: 12 }, (_, i) => `${i + 1}`);
+  const years = Array.from({ length: 10 }, (_, i) => `${2023 + i}`);
 
-  const handleCheckboxToggle1 = () => {
-    setChecked1(!checked1);
-  };
-
-  const handleCheckboxToggle2 = () => {
-    setChecked2(!checked2);
-  };
-
-  const handleCheckboxToggle3 = () => {
-    setChecked3(!checked3);
-  };
+  const [endday, setendDay] = useState('');
+  const [endmonth, setendMonth] = useState('');
+  const [endyear, setendYear] = useState('');
+  const enddays = Array.from({ length: 31 }, (_, i) => `${i + 1}`);
+  const endmonths = Array.from({ length: 12 }, (_, i) => `${i + 1}`);
+  const endyears = Array.from({ length: 10 }, (_, i) => `${2023 + i}`);
 
   const [checkedSkills, setCheckedSkills] = useState({
     csharp: false,
@@ -49,36 +37,36 @@ const App = () => {
     js: false,
   });
 
-  const handleRadioButtonPress = (selectedGender) => {
-    setGender(selectedGender);
+  const [salary, setSalary] = useState('');
+  const [gender, setGender] = useState('male');
+
+const handleCheckboxToggle1 = () => {
+    setCheckedSkills((prevSkills) => ({
+      ...prevSkills,
+      csharp: !prevSkills.csharp,
+    }));
   };
 
-//   const handleDeleteButton = () => {
-//     db.transaction(
-//       (tx) => {
-//         tx.executeSql(
-//           'DELETE FROM users',
-//           [],
-//           (_, results) => {
-//             console.log('Table Data deleted successfully');
-//             fetchData();
-//           },
-//           (_, error) => {
-//             console.error('Error deleting table data', error);
-//           }
-//         );
-//       },
-//       null,
-//       null
-//     );
-//   };
+  const handleCheckboxToggle2 = () => {
+    setCheckedSkills((prevSkills) => ({
+      ...prevSkills,
+      java: !prevSkills.java,
+    }));
+  };
+
+  const handleCheckboxToggle3 = () => {
+    setCheckedSkills((prevSkills) => ({
+      ...prevSkills,
+      js: !prevSkills.js,
+    }));
+  };
 
   useEffect(() => {
     fetchData();
   }, []);
 
   const handleSaveButton = () => {
-    if (!name || !department || !designation) {
+    if (!designation || !salary) {
       Alert.alert('Missing Information', 'Please fill in all fields before adding.');
       return;
     }
@@ -87,7 +75,7 @@ const App = () => {
       (tx) => {
         // Create USER table if not exists
         tx.executeSql(
-          'CREATE TABLE IF NOT EXISTS USER (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, department TEXT, designation TEXT, gender TEXT, startday INTEGER, startmonth INTEGER, startyear INTEGER, day INTEGER, month INTEGER, year INTEGER, salary TEXT, csharp INTEGER, java INTEGER, js INTEGER)',
+          'CREATE TABLE IF NOT EXISTS USER (id INTEGER PRIMARY KEY AUTOINCREMENT, designation TEXT, gender TEXT, day INTEGER, month INTEGER, year INTEGER, endday INTEGER, endmonth INTEGER, endyear INTEGER, salary TEXT, csharp INTEGER, java INTEGER, js INTEGER)',
           [],
           () => {
             console.log('USER Table created successfully or already exists');
@@ -99,18 +87,16 @@ const App = () => {
 
         // Insert data into USER table
         tx.executeSql(
-          'INSERT INTO USER (name, department, designation, gender, startday, startmonth, startyear, day, month, year, salary, csharp, java, js) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+          'INSERT INTO USER (designation, gender, day, month, year, endday, endmonth, endyear, salary, csharp, java, js) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
           [
-            name,
-            department,
             designation,
             gender,
-            parseInt(startday),
-            parseInt(startmonth),
-            parseInt(startyear),
             parseInt(day),
             parseInt(month),
             parseInt(year),
+            parseInt(endday),
+            parseInt(endmonth),
+            parseInt(endyear),
             salary,
             checkedSkills.csharp ? 1 : 0,
             checkedSkills.java ? 1 : 0,
@@ -130,16 +116,14 @@ const App = () => {
     );
 
     // Clear input fields
-    setName('');
-    setDepartment('');
     setDesignation('');
     setGender('male');
-    setstartDay('');
-    setstartMonth('');
-    setstartYear('');
     setDay('');
     setMonth('');
     setYear('');
+    setendDay('');
+    setendMonth('');
+    setendYear('');
     setSalary('');
     setCheckedSkills({
       csharp: false,
@@ -171,74 +155,77 @@ const App = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.dateContainer}>
-        <Text style={styles.startdate}>Start Date : </Text>
-        <TextInput
-          style={[styles.input]}
-          placeholder='Day'
-          value={startday}
-          keyboardType='numeric'
-          onChangeText={(text) => {
-            setstartDay(text);
-          }}
-        />
-        <TextInput
-          style={[styles.input]}
-          placeholder='Month'
-          value={startmonth}
-          keyboardType='numeric'
-          onChangeText={(text) => {
-            setstartMonth(text);
-          }}
-        />
-        <TextInput
-          style={[styles.input]}
-          placeholder='Year'
-          value={startyear}
-          keyboardType='numeric'
-          onChangeText={(text) => {
-            setstartYear(text);
-          }}
-        />
+      <ScrollView>
+      <Text style={styles.startdate}>Start Date : </Text>
+      <View style={styles.dropdownContainer}>
+        <Picker
+          selectedValue={day}
+          onValueChange={(itemValue) => setDay(itemValue)}
+        >
+          <Picker.Item label="day" value="" />
+          {days.map((value) => (
+            <Picker.Item key={value} label={value} value={value} />
+          ))}
+        </Picker>
+        <Picker
+          selectedValue={month}
+          onValueChange={(itemValue) => setMonth(itemValue)}
+        >
+          <Picker.Item label="month" value="" />
+          {months.map((value) => (
+            <Picker.Item key={value} label={value} value={value} />
+          ))}
+        </Picker>
+        <Picker
+          selectedValue={year}
+          onValueChange={(itemValue) => setYear(itemValue)}
+        >
+          <Picker.Item label="year" value="" />
+          {years.map((value) => (
+            <Picker.Item key={value} label={value} value={value} />
+          ))}
+        </Picker>
       </View>
-      <View style={styles.dateContainer}>
-        <Text style={styles.startdate}>End Date : </Text>
-        <TextInput
-          style={[styles.input]}
-          placeholder='Day'
-          value={day}
-          keyboardType='numeric'
-          onChangeText={(text) => {
-            setDay(text);
-          }}
-        />
-        <TextInput
-          style={[styles.input]}
-          placeholder='Month'
-          value={month}
-          keyboardType='numeric'
-          onChangeText={(text) => {
-            setMonth(text);
-          }}
-        />
-        <TextInput
-          style={[styles.input]}
-          placeholder='Year'
-          value={year}
-          keyboardType='numeric'
-          onChangeText={(text) => {
-            setYear(text);
-          }}
-        />
+      <Text style={styles.startdate}>End Date : </Text>
+      <View style={styles.dropdownContainer}>
+        <Picker
+          selectedValue={endday}
+          onValueChange={(itemValue) => setendDay(itemValue)}
+        >
+          <Picker.Item label="day" value="" />
+          {enddays.map((value) => (
+            <Picker.Item key={value} label={value} value={value} />
+          ))}
+        </Picker>
+        <Picker
+          selectedValue={endmonth}
+          onValueChange={(itemValue) => setendMonth(itemValue)}
+        >
+          <Picker.Item label="month" value="" />
+          {endmonths.map((value) => (
+            <Picker.Item key={value} label={value} value={value} />
+          ))}
+        </Picker>
+        <Picker
+          selectedValue={endyear}
+          onValueChange={(itemValue) => setendYear(itemValue)}
+        >
+          <Picker.Item label="year" value="" />
+          {endyears.map((value) => (
+            <Picker.Item key={value} label={value} value={value} />
+          ))}
+        </Picker>
       </View>
 
       <View>
-        <Text style={styles.text}>Designation</Text>
+        <Text style={styles.text}>Designation :</Text>
+        <View style={styles.des_dropdownContainer}>
         <RNPickerSelect
-            placeholder={{ label: 'Select Designation', value: null }}
+            placeholder={{ label: 'Designation', value: null }}
             onValueChange={(value) => setDesignation(value)}
             items={designationData.map((item) => ({ label: item, value: item }))}
         />
+        </View>
     </View>
 
       <View style={{ flexDirection: 'row' }}>
@@ -257,12 +244,12 @@ const App = () => {
         <Text style={styles.text}>Gender</Text>
         <TouchableOpacity
           style={[styles.radioButton, gender === 'male' && styles.selectedRadioButton]}
-          onPress={() => handleRadioButtonPress('male')}>
+          onPress={() => setGender('male')}>
           <Text style={styles.radioText}>Male</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.radioButton, gender === 'female' && styles.selectedRadioButton]}
-          onPress={() => handleRadioButtonPress('female')}>
+          onPress={() => setGender('female')}>
           <Text style={styles.radioText}>Female</Text>
         </TouchableOpacity>
       </View>
@@ -270,16 +257,16 @@ const App = () => {
       <Text style={styles.text}>Skills</Text>
       <View style={styles.cb_container}>
         <TouchableOpacity style={styles.checkboxContainer} onPress={handleCheckboxToggle1}>
-          <View style={[styles.checkbox, checked1 && styles.checkedCheckbox]} />
-          <Text style={styles.checkboxLabel}>C#</Text>
+        <View style={[styles.checkbox, checkedSkills.csharp && styles.checkedCheckbox]} />
+        <Text style={styles.checkboxLabel}>C#</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.checkboxContainer} onPress={handleCheckboxToggle2}>
-          <View style={[styles.checkbox, checked2 && styles.checkedCheckbox]} />
-          <Text style={styles.checkboxLabel}>JAVA</Text>
+        <View style={[styles.checkbox, checkedSkills.java && styles.checkedCheckbox]} />
+        <Text style={styles.checkboxLabel}>JAVA</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.checkboxContainer} onPress={handleCheckboxToggle3}>
-          <View style={[styles.checkbox, checked3 && styles.checkedCheckbox]} />
-          <Text style={styles.checkboxLabel}>JS</Text>
+        <View style={[styles.checkbox, checkedSkills.js && styles.checkedCheckbox]} />
+        <Text style={styles.checkboxLabel}>JS</Text>
         </TouchableOpacity>
       </View>
 
@@ -294,12 +281,17 @@ const App = () => {
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <View style={styles.listItem}>
-            <Text style={styles.listdataText}>Name: {item.name}</Text>
-            <Text style={styles.listdataText}>Department: {item.department}</Text>
             <Text style={styles.listdataText}>Designation: {item.designation}</Text>
+            <Text style={styles.listdataText}>Salary: {item.salary}</Text>
+            <Text style={styles.listdataText}>Gender: {item.gender}</Text>
+            <Text style={styles.listdataText}>CSharp : {item.csharp} -- Java : {item.java} -- JS : {item.js}</Text>
+            <Text style={styles.listdataText}>Start Date: {item.day},{item.month},{item.year}</Text>
+            <Text style={styles.listdataText}>Start Date: {item.endday},{item.endmonth},{item.endyear}</Text>
           </View>
         )}
       />
+
+        </ScrollView>
     </View>
   );
 };
@@ -315,147 +307,157 @@ const styles = StyleSheet.create({
         color: 'black',
         paddingRight: 30,
         marginTop: 10,
-      },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: 'black',
-  },
-  cb_container: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    backgroundColor: 'black',
-  },
-  dateContainer: {
-    marginTop: 20,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  input: {
-    textAlign: 'center',
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    width: 70,
-    borderRadius: 15,
-    marginLeft: 20,
-    marginTop: 10,
-    marginBottom: 10,
-    padding: 8,
-  },
-  inputsalary: {
-    textAlign: 'center',
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    width: 200,
-    borderRadius: 15,
-    marginLeft: 20,
-    marginTop: 10,
-    marginBottom: 10,
-    padding: 8,
-  },
-  errorInput: {
-    borderColor: 'red',
-  },
-  listItem: {
-    marginBottom: 10,
-    padding: 8,
-    backgroundColor: 'blue',
-    borderRadius: 15,
-    borderWidth: 3,
-    borderColor: 'cyan',
-  },
-  savebutton: {
-    backgroundColor: '#11ba1c',
-    padding: 8,
-    width: 150,
-    borderRadius: 25,
-    marginTop: 30,
-    marginVertical: 5,
-    alignSelf: 'center',
-    borderWidth: 1,
-    borderColor: 'white',
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  startdate: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    fontSize: 18,
-    marginTop: 7,
-  },
-  text: {
-    color: 'white',
-    fontWeight: 'bold',
-    padding: 15,
-    fontSize: 18,
-    marginTop: 7,
-  },
-  listdataText: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontFamily: 'georgia',
-    fontSize: 18,
-  },
-  picker: {
-    width: 200,
-    height: 40,
-    color: 'white',
-    backgroundColor: 'blue',
-  },
-  radioGroup: {
-    flexDirection: 'row',
-    marginTop: 10,
-  },
-  radioText: {
-    flex: 1,
-    fontSize: 16,
-    color: 'white',
-    textAlign: 'center',
-  },
-  radioButton: {
-    flexDirection: 'row',
-    textAlign: 'center',
-    alignItems: 'center',
-    height: 40,
-    width: 100,
-    marginVertical: 5,
-    marginLeft: 15,
-    borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 25,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-  },
-  selectedRadioButton: {
-    backgroundColor: '#11ba1c',
-    borderColor: 'white',
-  },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 5,
-  },
-  checkbox: {
-    width: 20,
-    height: 20,
-    borderWidth: 1,
-    borderColor: 'black',
-    marginRight: 10,
-    marginLeft: 12,
-  },
-  checkedCheckbox: {
-    backgroundColor: 'blue',
-  },
-  checkboxLabel: {
-    fontSize: 16,
-  },
+    },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: 'grey',
+    },
+    cb_container: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+         backgroundColor: 'grey',
+    },
+    dateContainer: {
+        marginTop: 20,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    input: {
+        textAlign: 'center',
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        width: 70,
+        borderRadius: 15,
+        marginLeft: 20,
+        marginTop: 10,
+        marginBottom: 10,
+        padding: 8,
+    },
+    inputsalary: {
+        textAlign: 'center',
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        width: 200,
+        borderRadius: 15,
+        marginLeft: 20,
+        marginTop: 10,
+        marginBottom: 10,
+        padding: 8,
+    },
+    errorInput: {
+        borderColor: 'red',
+    },
+    listItem: {
+        alignItems: 'center',
+        alignSelf: 'center',
+        marginBottom: 10,
+        padding: 10,
+        backgroundColor: 'blue',
+        borderRadius: 15,
+        borderWidth: 3,
+        borderColor: 'cyan',
+        width: 300,
+    },
+    savebutton: {
+        backgroundColor: '#11ba1c',
+        padding: 8,
+        width: 150,
+        borderRadius: 25,
+        marginTop: 30,
+        marginVertical: 5,
+        alignSelf: 'center',
+        borderWidth: 1,
+        borderColor: 'white',
+    },
+    buttonText: {
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    startdate: {
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'left',
+        fontSize: 18,
+        marginTop: 7,
+        marginLeft: 10,
+    },
+    text: {
+        color: 'white',
+        fontWeight: 'bold',
+        padding: 15,
+        fontSize: 18,
+        marginTop: 7,
+    },
+    listdataText: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontFamily: 'georgia',
+        fontSize: 18,
+    },
+    dropdownContainer: {
+        marginLeft: 10,
+        marginRight: 10,
+        width: 150,
+        marginLeft: 100,
+    },
+    des_dropdownContainer: {
+        marginLeft: 10,
+        marginRight: 10,
+        width: 250,
+        marginLeft: 100,
+    },
+    radioGroup: {
+        flexDirection: 'row',
+        marginTop: 10,
+    },
+    radioText: {
+        flex: 1,
+        fontSize: 16,
+        color: 'white',
+        textAlign: 'center',
+    },
+    radioButton: {
+        flexDirection: 'row',
+        textAlign: 'center',
+        alignItems: 'center',
+        height: 40,
+        width: 100,
+        marginVertical: 5,
+        marginLeft: 15,
+        borderWidth: 1,
+        borderColor: 'black',
+        borderRadius: 25,
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+    },
+    selectedRadioButton: {
+        backgroundColor: '#11ba1c',
+        borderColor: 'white',
+    },
+    checkboxContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 5,
+    },
+    checkbox: {
+        width: 20,
+        height: 20,
+        borderWidth: 1,
+        borderColor: 'black',
+        marginRight: 10,
+        marginLeft: 12,
+    },
+    checkedCheckbox: {
+        backgroundColor: 'blue',
+    },
+    checkboxLabel: {
+        fontSize: 16,
+    },
 });
 
 export default App;

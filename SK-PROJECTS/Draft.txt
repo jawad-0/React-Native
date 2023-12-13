@@ -1,0 +1,84 @@
+{/* <TextInput
+          style={[styles.input]}
+          placeholder='Day'
+          value={startday}
+          keyboardType='numeric'
+          onChangeText={(text) => {
+            setstartDay(text);
+          }}
+        />
+        <TextInput
+          style={[styles.input]}
+          placeholder='Month'
+          value={startmonth}
+          keyboardType='numeric'
+          onChangeText={(text) => {
+            setstartMonth(text);
+          }}
+        />
+        <TextInput
+          style={[styles.input]}
+          placeholder='Year'
+          value={startyear}
+          keyboardType='numeric'
+          onChangeText={(text) => {
+            setstartYear(text);
+          }}
+        /> */}
+
+{/* <TextInput
+          style={[styles.input]}
+          placeholder='Day'
+          value={day}
+          keyboardType='numeric'
+          onChangeText={(text) => {
+            setDay(text);
+          }}
+        />
+        <TextInput
+          style={[styles.input]}
+          placeholder='Month'
+          value={month}
+          keyboardType='numeric'
+          onChangeText={(text) => {
+            setMonth(text);
+          }}
+        />
+        <TextInput
+          style={[styles.input]}
+          placeholder='Year'
+          value={year}
+          keyboardType='numeric'
+          onChangeText={(text) => {
+            setYear(text);
+          }}
+        /> */}
+
+        //   const [checked1, setChecked1] = useState(false);
+//   const [checked2, setChecked2] = useState(false);
+//   const [checked3, setChecked3] = useState(false);
+
+//   const handleCheckboxToggle1 = () => {
+//     setChecked1(!checked1);
+//   };
+
+//   const handleCheckboxToggle2 = () => {
+//     setChecked2(!checked2);
+//   };
+
+//   const handleCheckboxToggle3 = () => {
+//     setChecked3(!checked3);
+//   };
+
+{/* <TouchableOpacity style={styles.checkboxContainer} onPress={handleCheckboxToggle1}>
+          <View style={[styles.checkbox, checked1 && styles.checkedCheckbox]} />
+          <Text style={styles.checkboxLabel}>C#</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.checkboxContainer} onPress={handleCheckboxToggle2}>
+          <View style={[styles.checkbox, checked2 && styles.checkedCheckbox]} />
+          <Text style={styles.checkboxLabel}>JAVA</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.checkboxContainer} onPress={handleCheckboxToggle3}>
+          <View style={[styles.checkbox, checked3 && styles.checkedCheckbox]} />
+          <Text style={styles.checkboxLabel}>JS</Text>
+        </TouchableOpacity> */}
