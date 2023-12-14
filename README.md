@@ -1,3 +1,5 @@
+Hi, it's me, Jawad Gujjar, working on React Native projects. I hope to provide you with the best solutions. 💛
+
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
 # Getting Started
